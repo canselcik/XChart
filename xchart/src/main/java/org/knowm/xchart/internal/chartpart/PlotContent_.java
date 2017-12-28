@@ -82,10 +82,17 @@ public abstract class PlotContent_<ST extends Styler, S extends Series> implemen
    * Closes a path for area charts if one is available.
    */
   void closePath(Graphics2D g, Path2D.Double path, double previousX, Rectangle2D bounds, double yTopMargin) {
+    closePath(g, path, previousX, bounds, yTopMargin,false);
+  }
+
+  void closePath(Graphics2D g, Path2D.Double path, double previousX, Rectangle2D bounds, double yTopMargin, boolean reverse) {
 
     if (path != null) {
-      double yBottomOfArea = getBounds().getY() + getBounds().getHeight() - yTopMargin;
-      path.lineTo(previousX, yBottomOfArea);
+      double endY = getBounds().getY();
+      if (!reverse)
+        endY += getBounds().getHeight() - yTopMargin;
+
+      path.lineTo(previousX, endY);
       path.closePath();
       g.fill(path);
     }
